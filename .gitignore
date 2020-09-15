@@ -1,0 +1,4 @@
+functions/lambda.zip
+.terraform/
+.tfstate*
+.vim/
