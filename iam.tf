@@ -12,34 +12,45 @@ data "aws_iam_policy_document" "assume_role" {
 
 data "aws_iam_policy_document" "lambda" {
   statement {
-    sid    = "AllowAccessToAutoScalingGroup"
+    sid    = "AllowAutoScalingGroupDescribe"
     effect = "Allow"
 
     actions = [
       "autoscaling:DescribeAutoScalingGroups",
       "autoscaling:DescribeInstanceRefreshes",
-      "autoscaling:StartInstanceRefresh",
     ]
+
+    resources = ["*"]
+  }
+
+  statement {
+    sid     = "AllowAutoScalingGroupInstanceRefresh"
+    effect  = "Allow"
+    actions = ["autoscaling:StartInstanceRefresh"]
 
     resources = [
       "${data.aws_autoscaling_group.group.arn}",
-      "${data.aws_autoscaling_group.group.arn}*",
     ]
   }
 
   statement {
-    sid    = "AllowAccessToLaunchTemplate"
+    sid       = "AllowLaunchTemplateDescribe"
+    effect    = "Allow"
+    actions   = ["ec2:DescribeLaunchTemplateVersions"]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "AllowLaunchTemplateCreateAndModify"
     effect = "Allow"
 
     actions = [
       "ec2:CreateLaunchTemplateVersion",
-      "ec2:DescribeLaunchTemplateVersions",
       "ec2:ModifyLaunchTemplate",
     ]
 
     resources = [
       "${data.aws_launch_template.template.arn}",
-      "${data.aws_launch_template.template.arn}*",
     ]
   }
 
