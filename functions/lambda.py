@@ -60,13 +60,13 @@ def get_current_image_id():
     return param_value['image_id']
 
 
-def get_launch_template_name():
+def get_launch_template_name_and_auto_scaling_group():
     """Returns Launch Template name for Auto Scaling Group"""
     group_description_resp = autoscaling.describe_auto_scaling_groups(AutoScalingGroupNames=(AUTO_SCALING_GROUP_NAME,))
     launch_template_details = group_description_resp['AutoScalingGroups'][0]['MixedInstancesPolicy']['LaunchTemplate']
     launch_template_name = launch_template_details['LaunchTemplateSpecification']['LaunchTemplateName']
     logger.info('Using Launch Template "%s"', launch_template_name)
-    return launch_template_name
+    return (launch_template_name, group_description_resp['AutoScalingGroups'][0])
 
 
 def is_launch_template_updated(image_id, launch_template_name):
@@ -128,16 +128,7 @@ def update_launch_template(image_id, launch_template_name):
     logger.info('Set the new Launch Template version as default\n\n%s', modify_resp)
 
 
-def main():
-    image_id = get_current_image_id()
-    launch_template_name = get_launch_template_name()
-    if launch_template_state := is_launch_template_updated(image_id, launch_template_name):
-        logger.info('Launch Template for Auto Scaling Group "%s" is already up to date', AUTO_SCALING_GROUP_NAME)
-        return launch_template_state
-
-    logger.info('Launch Template for Auto Scaling Group "%s" is not up to date', AUTO_SCALING_GROUP_NAME)
-    update_launch_template(image_id, launch_template_name)
-
+def start_instance_refresh():
     try:
         refresh_resp = autoscaling.start_instance_refresh(
             AutoScalingGroupName=AUTO_SCALING_GROUP_NAME,
@@ -152,6 +143,29 @@ def main():
         return None
     else:
         logger.info('Started instance refresh\n\n%s', refresh_resp)
+        return True
+
+
+def main():
+    image_id = get_current_image_id()
+    launch_template_name, autoscaling_group = get_launch_template_name_and_auto_scaling_group()
+
+    if launch_template_state := is_launch_template_updated(image_id, launch_template_name):
+        logger.info('Launch Template for Auto Scaling Group "%s" is already up to date', AUTO_SCALING_GROUP_NAME)
+
+        default_lt_version = str(ec2.describe_launch_template_versions(
+            LaunchTemplateName=launch_template_name, Versions=('$Default',),
+        )['LaunchTemplateVersions'][0]['VersionNumber'])
+
+        for instance in autoscaling_group['Instances']:
+            if instance['LaunchTemplate']['Version'] != default_lt_version:
+                return start_instance_refresh()
+
+        return launch_template_state
+
+    logger.info('Launch Template for Auto Scaling Group "%s" is not up to date', AUTO_SCALING_GROUP_NAME)
+    update_launch_template(image_id, launch_template_name)
+    return start_instance_refresh()
 
 
 def handler(event, context):
