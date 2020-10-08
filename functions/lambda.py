@@ -63,8 +63,14 @@ def get_current_image_id():
 def get_launch_template_name_and_auto_scaling_group():
     """Returns Launch Template name for Auto Scaling Group"""
     group_description_resp = autoscaling.describe_auto_scaling_groups(AutoScalingGroupNames=(AUTO_SCALING_GROUP_NAME,))
-    launch_template_details = group_description_resp['AutoScalingGroups'][0]['MixedInstancesPolicy']['LaunchTemplate']
-    launch_template_name = launch_template_details['LaunchTemplateSpecification']['LaunchTemplateName']
+    group_details = group_description_resp['AutoScalingGroups'][0]
+
+    if 'MixedInstancesPolicy' in group_details:
+        launch_template_details = group_details['MixedInstancesPolicy']['LaunchTemplate']
+        launch_template_name = launch_template_details['LaunchTemplateSpecification']['LaunchTemplateName']
+    else:
+        launch_template_name = group_details['LaunchTemplate']['LaunchTemplateName']
+
     logger.info('Using Launch Template "%s"', launch_template_name)
     return (launch_template_name, group_description_resp['AutoScalingGroups'][0])
 
