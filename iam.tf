@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "lambda" {
     actions = ["autoscaling:StartInstanceRefresh"]
 
     resources = [
-      "${data.aws_autoscaling_group.group.arn}",
+      data.aws_autoscaling_group.group.arn,
     ]
   }
 
@@ -50,7 +50,7 @@ data "aws_iam_policy_document" "lambda" {
     ]
 
     resources = [
-      "${data.aws_launch_template.template.arn}",
+      data.aws_launch_template.template.arn,
     ]
   }
 
@@ -78,13 +78,13 @@ data "aws_iam_policy_document" "lambda" {
 }
 
 resource "aws_iam_role" "lambda" {
-  name               = "${var.lambda_role_name}"
-  assume_role_policy = "${data.aws_iam_policy_document.assume_role.json}"
-  description        = "${var.lambda_role_description}"
+  name               = var.lambda_role_name
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  description        = var.lambda_role_description
 }
 
 resource "aws_iam_role_policy" "lambda" {
-  name_prefix = "${var.lambda_role_name}"
-  policy      = "${data.aws_iam_policy_document.lambda.json}"
-  role        = "${aws_iam_role.lambda.id}"
+  name_prefix = var.lambda_role_name
+  policy      = data.aws_iam_policy_document.lambda.json
+  role        = aws_iam_role.lambda.id
 }
