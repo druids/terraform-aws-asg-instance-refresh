@@ -1,3 +1,8 @@
+data "aws_lambda_layer_version" "sentry" {
+  layer_name = "arn:aws:lambda:${data.aws_region.current.name}:943013980633:layer:SentryPythonServerlessSDK"
+  version    = 7
+}
+
 resource "aws_lambda_function" "refresh" {
   filename = data.archive_file.lambda.output_path
 
@@ -11,7 +16,7 @@ resource "aws_lambda_function" "refresh" {
   description = var.lambda_description
 
   layers = [
-    "arn:aws:lambda:${data.aws_region.current.name}:943013980633:layer:SentryPythonServerlessSDK:7",
+    data.aws_lambda_layer_version.sentry.arn,
   ]
 
   environment {
