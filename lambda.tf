@@ -1,6 +1,6 @@
 data "aws_lambda_layer_version" "sentry" {
   layer_name = "arn:aws:lambda:${data.aws_region.current.name}:943013980633:layer:SentryPythonServerlessSDK"
-  version    = 7
+  version    = var.sentry_lambda_layer_version
 }
 
 resource "aws_lambda_function" "refresh" {

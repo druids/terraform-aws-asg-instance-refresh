@@ -95,3 +95,8 @@ variable "sentry_environment" {
   default = null
   type    = string
 }
+
+variable "sentry_lambda_layer_version" {
+  default = 11
+  type    = number
+}
