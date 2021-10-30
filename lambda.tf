@@ -10,12 +10,18 @@ resource "aws_lambda_function" "refresh" {
 
   description = var.lambda_description
 
+  layers = [
+    "arn:aws:lambda:${data.aws_region.current.name}:943013980633:layer:SentryPythonServerlessSDK:7",
+  ]
+
   environment {
     variables = {
       AUTO_SCALING_GROUP_NAME                 = var.autoscaling_group_name
       DESCRIBE_INSTANCE_REFRESHES_MAX_RECORDS = var.describe_instance_refreshes_max_records
       REFRESH_INSTANCE_WARMUP                 = var.instance_refresh_instance_warmup
       REFRESH_MIN_HEALTHY_PERCENTAGE          = var.instance_refresh_min_healthy_percentage
+      SENTRY_DSN                              = var.sentry_dsn
+      SENTRY_ENVIRONMENT                      = var.sentry_environment
       SSM_PARAMETER_NAME                      = var.ami_ssm_parameter
     }
   }

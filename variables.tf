@@ -85,3 +85,13 @@ variable "launch_template_source_version" {
   default     = "$Default"
   type        = string
 }
+
+variable "sentry_dsn" {
+  default = null
+  type    = string
+}
+
+variable "sentry_environment" {
+  default = null
+  type    = string
+}

@@ -4,6 +4,8 @@ import logging.config
 from os import environ
 
 import boto3
+import sentry_sdk
+from sentry_sdk.integrations.aws_lambda import AwsLambdaIntegration
 
 
 class LambdaError(RuntimeError):
@@ -25,6 +27,10 @@ LOGGING_LEVEL = environ.get('LOGGING_LEVEL', logging.INFO)
 REFRESH_INSTANCE_WARMUP = int(environ['REFRESH_INSTANCE_WARMUP'])
 REFRESH_MIN_HEALTHY_PERCENTAGE = int(environ['REFRESH_MIN_HEALTHY_PERCENTAGE'])
 SSM_PARAMETER_NAME = environ['SSM_PARAMETER_NAME']
+SENTRY_DSN = environ.get('SENTRY_DSN')
+
+if SENTRY_DSN:
+    sentry_sdk.init(SENTRY_DSN, integrations=[AwsLambdaIntegration()])
 
 logging.config.dictConfig({
     'version': 1,
