@@ -4,8 +4,8 @@ data "aws_region" "current" {}
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_file = "${path.module}/functions/lambda.zip"
-  output_path = "${path.module}/functions/lambda.py"
+  source_file = "${path.module}/functions/lambda.py"
+  output_path = "${path.module}/functions/lambda.zip"
 }
 
 data "aws_autoscaling_group" "group" {
