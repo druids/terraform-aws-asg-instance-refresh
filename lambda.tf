@@ -4,14 +4,14 @@ data "aws_lambda_layer_version" "sentry" {
 }
 
 resource "aws_lambda_function" "refresh" {
-  filename = data.archive_file.lambda.output_path
+  filename = "${path.module}/functions/lambda.zip"
 
   function_name    = var.lambda_name
   handler          = "lambda.handler"
   role             = aws_iam_role.lambda.arn
   runtime          = "python3.8"
   timeout          = var.lambda_timeout
-  source_code_hash = data.archive_file.lambda.output_base64sha256
+  source_code_hash = filebase64sha256("${path.module}/functions/lambda.zip")
 
   description = var.lambda_description
 
