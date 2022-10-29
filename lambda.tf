@@ -12,6 +12,7 @@ resource "aws_lambda_function" "refresh" {
   runtime          = "python3.8"
   timeout          = var.lambda_timeout
   source_code_hash = filebase64sha256("${path.module}/functions/lambda.zip")
+  architectures    = [var.lambda_architecture]
 
   description = var.lambda_description
 
