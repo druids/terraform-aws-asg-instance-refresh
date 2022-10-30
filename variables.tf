@@ -45,6 +45,12 @@ variable "launch_template_version_description" {
   type        = string
 }
 
+variable "lambda_architecture" {
+  description = "Set CPU architecture for the Lambda function. Valid values are \"x86_64\" and \"arm64\"."
+  default     = "x86_64"
+  type        = string
+}
+
 variable "lambda_description" {
   description = "Description of the Lambda function"
   default     = "Keeps ASG Launch Template updated with most recent AMI read from SSM Parameter"
