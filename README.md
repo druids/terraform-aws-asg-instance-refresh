@@ -9,7 +9,6 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_archive"></a> [archive](#provider\_archive) | n/a |
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.0 |
 
 ## Modules
@@ -26,7 +25,6 @@ No modules.
 | [aws_iam_role_policy.lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_lambda_function.refresh](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
 | [aws_lambda_permission.allow_cloudwatch_events](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
-| [archive_file.lambda](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 | [aws_autoscaling_group.group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/autoscaling_group) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_iam_policy_document.assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -46,6 +44,7 @@ No modules.
 | <a name="input_describe_instance_refreshes_max_records"></a> [describe\_instance\_refreshes\_max\_records](#input\_describe\_instance\_refreshes\_max\_records) | Page size for boto3 when calling autoscaling:DescribeInstanceRefreshes (max is 100) | `number` | `100` | no |
 | <a name="input_instance_refresh_instance_warmup"></a> [instance\_refresh\_instance\_warmup](#input\_instance\_refresh\_instance\_warmup) | Instance warmup time for instance refresh | `number` | `300` | no |
 | <a name="input_instance_refresh_min_healthy_percentage"></a> [instance\_refresh\_min\_healthy\_percentage](#input\_instance\_refresh\_min\_healthy\_percentage) | Minimum healthy percentage for instance refresh | `number` | `90` | no |
+| <a name="input_lambda_architecture"></a> [lambda\_architecture](#input\_lambda\_architecture) | Set CPU architecture for the Lambda function. Valid values are "x86\_64" and "arm64". | `string` | `"x86_64"` | no |
 | <a name="input_lambda_description"></a> [lambda\_description](#input\_lambda\_description) | Description of the Lambda function | `string` | `"Keeps ASG Launch Template updated with most recent AMI read from SSM Parameter"` | no |
 | <a name="input_lambda_name"></a> [lambda\_name](#input\_lambda\_name) | Name of the Lambda function | `string` | `"ASGRefreshInstances"` | no |
 | <a name="input_lambda_role_description"></a> [lambda\_role\_description](#input\_lambda\_role\_description) | Role description for the Lambda function | `string` | `""` | no |
