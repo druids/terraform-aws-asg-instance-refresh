@@ -44,6 +44,7 @@ No modules.
 | <a name="input_describe_instance_refreshes_max_records"></a> [describe\_instance\_refreshes\_max\_records](#input\_describe\_instance\_refreshes\_max\_records) | Page size for boto3 when calling autoscaling:DescribeInstanceRefreshes (max is 100) | `number` | `100` | no |
 | <a name="input_instance_refresh_instance_warmup"></a> [instance\_refresh\_instance\_warmup](#input\_instance\_refresh\_instance\_warmup) | Instance warmup time for instance refresh | `number` | `300` | no |
 | <a name="input_instance_refresh_min_healthy_percentage"></a> [instance\_refresh\_min\_healthy\_percentage](#input\_instance\_refresh\_min\_healthy\_percentage) | Minimum healthy percentage for instance refresh | `number` | `90` | no |
+| <a name="input_instance_refresh_skip_matching"></a> [instance\_refresh\_skip\_matching](#input\_instance\_refresh\_skip\_matching) | Skip matching instances for instance refresh | `bool` | `false` | no |
 | <a name="input_lambda_architecture"></a> [lambda\_architecture](#input\_lambda\_architecture) | Set CPU architecture for the Lambda function. Valid values are "x86\_64" and "arm64". | `string` | `"x86_64"` | no |
 | <a name="input_lambda_description"></a> [lambda\_description](#input\_lambda\_description) | Description of the Lambda function | `string` | `"Keeps ASG Launch Template updated with most recent AMI read from SSM Parameter"` | no |
 | <a name="input_lambda_name"></a> [lambda\_name](#input\_lambda\_name) | Name of the Lambda function | `string` | `"ASGRefreshInstances"` | no |
@@ -56,6 +57,7 @@ No modules.
 | <a name="input_sentry_dsn"></a> [sentry\_dsn](#input\_sentry\_dsn) | n/a | `string` | `null` | no |
 | <a name="input_sentry_environment"></a> [sentry\_environment](#input\_sentry\_environment) | n/a | `string` | `null` | no |
 | <a name="input_sentry_lambda_layer_version"></a> [sentry\_lambda\_layer\_version](#input\_sentry\_lambda\_layer\_version) | n/a | `number` | `11` | no |
+| <a name="input_update_mixed_instances_policy_overriden_launch_templates"></a> [update\_mixed\_instances\_policy\_overriden\_launch\_templates](#input\_update\_mixed\_instances\_policy\_overriden\_launch\_templates) | If you do not want to also update launch templates that override the default launch template, set this to false | `bool` | `true` | no |
 
 ## Outputs
 
