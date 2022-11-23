@@ -26,6 +26,7 @@ FINISHED_INSTANCE_REFRESH_STATES = ('Cancelled', 'Failed', 'Successful')
 LOGGING_LEVEL = environ.get('LOGGING_LEVEL', logging.INFO)
 REFRESH_INSTANCE_WARMUP = int(environ['REFRESH_INSTANCE_WARMUP'])
 REFRESH_MIN_HEALTHY_PERCENTAGE = int(environ['REFRESH_MIN_HEALTHY_PERCENTAGE'])
+REFRESH_SKIP_MATCHING = bool(environ['REFRESH_SKIP_MATCHING'])
 SENTRY_DSN = environ.get('SENTRY_DSN')
 SSM_PARAMETER_NAME = environ['SSM_PARAMETER_NAME']
 UPDATE_MIXED_INSTANCES_POLICY_OVERRIDEN_LAUNCH_TEMPLATES = bool(environ['UPDATE_MIXED_OVERRIDE_LAUNCH_TEMPLATES'])
@@ -163,6 +164,7 @@ def start_instance_refresh():
             Preferences={
                 'InstanceWarmup': REFRESH_INSTANCE_WARMUP,
                 'MinHealthyPercentage': REFRESH_MIN_HEALTHY_PERCENTAGE,
+                'SkipMatching': REFRESH_SKIP_MATCHING,
             },
         )
     except autoscaling.exceptions.InstanceRefreshInProgressFault as ex:

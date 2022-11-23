@@ -39,6 +39,12 @@ variable "instance_refresh_min_healthy_percentage" {
   type        = number
 }
 
+variable "instance_refresh_skip_matching" {
+  description = "Skip matching instances for instance refresh"
+  default     = false
+  type        = bool
+}
+
 variable "launch_template_version_description" {
   description = "Description of the new launch template version in Python's f-string format"
   default     = "Automated AMI refresh to \"{image_id}\""

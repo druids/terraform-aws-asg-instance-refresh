@@ -26,6 +26,7 @@ resource "aws_lambda_function" "refresh" {
       DESCRIBE_INSTANCE_REFRESHES_MAX_RECORDS                  = var.describe_instance_refreshes_max_records
       REFRESH_INSTANCE_WARMUP                                  = var.instance_refresh_instance_warmup
       REFRESH_MIN_HEALTHY_PERCENTAGE                           = var.instance_refresh_min_healthy_percentage
+      REFRESH_SKIP_MATCHING                                    = var.instance_refresh_skip_matching ? "True" : "False"
       SENTRY_DSN                                               = var.sentry_dsn
       SENTRY_ENVIRONMENT                                       = var.sentry_environment
       SSM_PARAMETER_NAME                                       = var.ami_ssm_parameter
