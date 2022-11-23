@@ -106,3 +106,9 @@ variable "sentry_lambda_layer_version" {
   default = 11
   type    = number
 }
+
+variable "update_mixed_instances_policy_overriden_launch_templates" {
+  description = "If you do not want to also update launch templates that override the default launch template, set this to false"
+  default     = true
+  type        = bool
+}

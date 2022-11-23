@@ -26,8 +26,9 @@ FINISHED_INSTANCE_REFRESH_STATES = ('Cancelled', 'Failed', 'Successful')
 LOGGING_LEVEL = environ.get('LOGGING_LEVEL', logging.INFO)
 REFRESH_INSTANCE_WARMUP = int(environ['REFRESH_INSTANCE_WARMUP'])
 REFRESH_MIN_HEALTHY_PERCENTAGE = int(environ['REFRESH_MIN_HEALTHY_PERCENTAGE'])
-SSM_PARAMETER_NAME = environ['SSM_PARAMETER_NAME']
 SENTRY_DSN = environ.get('SENTRY_DSN')
+SSM_PARAMETER_NAME = environ['SSM_PARAMETER_NAME']
+UPDATE_MIXED_INSTANCES_POLICY_OVERRIDEN_LAUNCH_TEMPLATES = bool(environ['UPDATE_MIXED_OVERRIDE_LAUNCH_TEMPLATES'])
 
 if SENTRY_DSN:
     sentry_sdk.init(SENTRY_DSN, integrations=[AwsLambdaIntegration()])
@@ -71,19 +72,28 @@ def get_current_image_id():
     return image_id
 
 
-def get_launch_template_name_and_auto_scaling_group():
-    """Returns Launch Template name for Auto Scaling Group"""
+def get_launch_template_names_and_auto_scaling_group():
+    """Returns Launch Template names for Auto Scaling Group"""
     group_description_resp = autoscaling.describe_auto_scaling_groups(AutoScalingGroupNames=(AUTO_SCALING_GROUP_NAME,))
     group_details = group_description_resp['AutoScalingGroups'][0]
+    mixed_instances_policy = group_details['MixedInstancesPolicy']
+    launch_template_names = []
 
     if 'MixedInstancesPolicy' in group_details:
-        launch_template_details = group_details['MixedInstancesPolicy']['LaunchTemplate']
-        launch_template_name = launch_template_details['LaunchTemplateSpecification']['LaunchTemplateName']
-    else:
-        launch_template_name = group_details['LaunchTemplate']['LaunchTemplateName']
+        launch_template_details = mixed_instances_policy['LaunchTemplate']
+        launch_template_names.append(launch_template_details['LaunchTemplateSpecification']['LaunchTemplateName'])
 
-    logger.info('Using Launch Template "%s"', launch_template_name)
-    return (launch_template_name, group_description_resp['AutoScalingGroups'][0])
+        if UPDATE_MIXED_INSTANCES_POLICY_OVERRIDEN_LAUNCH_TEMPLATES:
+            overrides = launch_template_details['Overrides']
+            for override in overrides:
+                if override_lt_specification := override.get('LaunchTemplateSpecification'):
+                    if override_lt_name := override_lt_specification.get('LaunchTemplateName'):
+                        launch_template_names.append(override_lt_name)
+    else:
+        launch_template_names.append(group_details['LaunchTemplate']['LaunchTemplateName'])
+
+    logger.info('Using Launch Templates "%s"', launch_template_names)
+    return (launch_template_names, group_description_resp['AutoScalingGroups'][0])
 
 
 def is_launch_template_updated(image_id, launch_template_name):
@@ -165,24 +175,21 @@ def start_instance_refresh():
 
 def main():
     image_id = get_current_image_id()
-    launch_template_name, autoscaling_group = get_launch_template_name_and_auto_scaling_group()
+    launch_template_names, autoscaling_group = get_launch_template_names_and_auto_scaling_group()
+    all_templates_up_to_date = True
 
-    if launch_template_state := is_launch_template_updated(image_id, launch_template_name):
-        logger.info('Launch Template for Auto Scaling Group "%s" is already up to date', AUTO_SCALING_GROUP_NAME)
+    for launch_template_name in launch_template_names:
+        if not is_launch_template_updated(image_id, launch_template_name):
+            all_templates_up_to_date = False
+            logger.info('Launch Template "%s" for Auto Scaling Group "%s" is not up to date',
+                        launch_template_name, AUTO_SCALING_GROUP_NAME)
+            update_launch_template(image_id, launch_template_name)
+        else:
+            logger.info('Launch Template "%s" for Auto Scaling Group "%s" is already up to date',
+                        launch_template_name, AUTO_SCALING_GROUP_NAME)
 
-        default_lt_version = str(ec2.describe_launch_template_versions(
-            LaunchTemplateName=launch_template_name, Versions=('$Default',),
-        )['LaunchTemplateVersions'][0]['VersionNumber'])
-
-        for instance in autoscaling_group['Instances']:
-            if instance['LaunchTemplate']['Version'] != default_lt_version:
-                return start_instance_refresh()
-
-        return launch_template_state
-
-    logger.info('Launch Template for Auto Scaling Group "%s" is not up to date', AUTO_SCALING_GROUP_NAME)
-    update_launch_template(image_id, launch_template_name)
-    return start_instance_refresh()
+    if not all_templates_up_to_date:
+        start_instance_refresh()
 
 
 def handler(event, context):
