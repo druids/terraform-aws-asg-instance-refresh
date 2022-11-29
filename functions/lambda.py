@@ -206,6 +206,8 @@ def main():
     for launch_template in launch_templates:
         if launch_template.is_arm and not image_id_arm:
             raise MissingEnvironmentVariable('Set the "SSM_PARAMETER_NAME_ARM" environment variable')
+
+    for launch_template in launch_templates:
         lt_image_id = image_id_arm if launch_template.is_arm else image_id
 
         if not is_launch_template_updated(lt_image_id, launch_template):
