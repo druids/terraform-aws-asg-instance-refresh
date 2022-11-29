@@ -38,6 +38,8 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_ami_ssm_parameter"></a> [ami\_ssm\_parameter](#input\_ami\_ssm\_parameter) | Name of SSM parameter containing the current AMI | `string` | `"/aws/service/ecs/optimized-ami/amazon-linux-2/recommended"` | no |
+| <a name="input_ami_ssm_parameter_arm"></a> [ami\_ssm\_parameter\_arm](#input\_ami\_ssm\_parameter\_arm) | Name of SSM parameter containing the current AMI (ARM) | `string` | `"/aws/service/ecs/optimized-ami/amazon-linux-2/arm64/recommended"` | no |
+| <a name="input_auto_scaling_group_is_arm_default"></a> [auto\_scaling\_group\_is\_arm\_default](#input\_auto\_scaling\_group\_is\_arm\_default) | Set to true if your ASG uses ARM instances in the default launch template | `string` | `false` | no |
 | <a name="input_autoscaling_group_name"></a> [autoscaling\_group\_name](#input\_autoscaling\_group\_name) | Name of the auto scaling group to refresh | `string` | n/a | yes |
 | <a name="input_cloudwatch_event_rule_name"></a> [cloudwatch\_event\_rule\_name](#input\_cloudwatch\_event\_rule\_name) | Name of the CloudWatch Event Rule | `string` | `"ASGRefreshInstancesEventRule"` | no |
 | <a name="input_cloudwatch_event_rule_schedule_expression"></a> [cloudwatch\_event\_rule\_schedule\_expression](#input\_cloudwatch\_event\_rule\_schedule\_expression) | Schedule expression for CloudWatch Event Rule | `string` | `"cron(0 0 * * ? *)"` | no |
