@@ -4,6 +4,18 @@ variable "ami_ssm_parameter" {
   type        = string
 }
 
+variable "ami_ssm_parameter_arm" {
+  default     = "/aws/service/ecs/optimized-ami/amazon-linux-2/arm64/recommended"
+  description = "Name of SSM parameter containing the current AMI (ARM)"
+  type        = string
+}
+
+variable "auto_scaling_group_is_arm_default" {
+  default     = false
+  description = "Set to true if your ASG uses ARM instances in the default launch template"
+  type        = string
+}
+
 variable "autoscaling_group_name" {
   description = "Name of the auto scaling group to refresh"
   type        = string

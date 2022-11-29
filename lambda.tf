@@ -22,6 +22,7 @@ resource "aws_lambda_function" "refresh" {
 
   environment {
     variables = {
+      AUTO_SCALING_GROUP_IS_ARM_DEFAULT                        = var.auto_scaling_group_is_arm_default ? "True" : "False"
       AUTO_SCALING_GROUP_NAME                                  = var.autoscaling_group_name
       DESCRIBE_INSTANCE_REFRESHES_MAX_RECORDS                  = var.describe_instance_refreshes_max_records
       REFRESH_INSTANCE_WARMUP                                  = var.instance_refresh_instance_warmup
@@ -30,6 +31,7 @@ resource "aws_lambda_function" "refresh" {
       SENTRY_DSN                                               = var.sentry_dsn
       SENTRY_ENVIRONMENT                                       = var.sentry_environment
       SSM_PARAMETER_NAME                                       = var.ami_ssm_parameter
+      SSM_PARAMETER_NAME_ARM                                   = var.ami_ssm_parameter_arm
       UPDATE_MIXED_INSTANCES_POLICY_OVERRIDEN_LAUNCH_TEMPLATES = var.update_mixed_instances_policy_overriden_launch_templates ? "True" : "False"
     }
   }
