@@ -30,7 +30,6 @@ No modules.
 | [aws_iam_policy_document.assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_lambda_layer_version.sentry](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/lambda_layer_version) | data source |
-| [aws_launch_template.template](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/launch_template) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 ## Inputs
@@ -53,9 +52,9 @@ No modules.
 | <a name="input_lambda_role_description"></a> [lambda\_role\_description](#input\_lambda\_role\_description) | Role description for the Lambda function | `string` | `""` | no |
 | <a name="input_lambda_role_name"></a> [lambda\_role\_name](#input\_lambda\_role\_name) | Role name for the Lambda function | `string` | `"ASGRefreshInstancesLambdaRole"` | no |
 | <a name="input_lambda_timeout"></a> [lambda\_timeout](#input\_lambda\_timeout) | Timeout for Lambda function in seconds | `number` | `60` | no |
-| <a name="input_launch_template_name"></a> [launch\_template\_name](#input\_launch\_template\_name) | Name of the launch template used by auto scaling group to refresh | `string` | n/a | yes |
 | <a name="input_launch_template_source_version"></a> [launch\_template\_source\_version](#input\_launch\_template\_source\_version) | Source version for the new launch template | `string` | `"$Default"` | no |
 | <a name="input_launch_template_version_description"></a> [launch\_template\_version\_description](#input\_launch\_template\_version\_description) | Description of the new launch template version in Python's f-string format | `string` | `"Automated AMI refresh to \"{image_id}\""` | no |
+| <a name="input_launch_templates_arns"></a> [launch\_templates\_arns](#input\_launch\_templates\_arns) | List of Launch Template ARNs to allow access to | `list(string)` | <pre>[<br>  "*"<br>]</pre> | no |
 | <a name="input_sentry_dsn"></a> [sentry\_dsn](#input\_sentry\_dsn) | n/a | `string` | `null` | no |
 | <a name="input_sentry_environment"></a> [sentry\_environment](#input\_sentry\_environment) | n/a | `string` | `null` | no |
 | <a name="input_sentry_lambda_layer_version"></a> [sentry\_lambda\_layer\_version](#input\_sentry\_lambda\_layer\_version) | n/a | `number` | `11` | no |
@@ -66,6 +65,3 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_asg_arn"></a> [asg\_arn](#output\_asg\_arn) | n/a |
-| <a name="output_lt_arn"></a> [lt\_arn](#output\_lt\_arn) | n/a |
-| <a name="output_lt_id"></a> [lt\_id](#output\_lt\_id) | n/a |
-| <a name="output_lt_name"></a> [lt\_name](#output\_lt\_name) | n/a |
