@@ -215,7 +215,7 @@ def main():
             all_templates_up_to_date = False
             logger.info('Launch Template "%s" for Auto Scaling Group "%s" is not up to date',
                         launch_template, AUTO_SCALING_GROUP_NAME)
-            update_launch_template(lt_image_id, launch_template)
+            update_launch_template(lt_image_id, launch_template.name)
         else:
             logger.info('Launch Template "%s" for Auto Scaling Group "%s" is already up to date',
                         launch_template, AUTO_SCALING_GROUP_NAME)
