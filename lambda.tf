@@ -22,13 +22,17 @@ resource "aws_lambda_function" "refresh" {
 
   environment {
     variables = {
-      AUTO_SCALING_GROUP_NAME                 = var.autoscaling_group_name
-      DESCRIBE_INSTANCE_REFRESHES_MAX_RECORDS = var.describe_instance_refreshes_max_records
-      REFRESH_INSTANCE_WARMUP                 = var.instance_refresh_instance_warmup
-      REFRESH_MIN_HEALTHY_PERCENTAGE          = var.instance_refresh_min_healthy_percentage
-      SENTRY_DSN                              = var.sentry_dsn
-      SENTRY_ENVIRONMENT                      = var.sentry_environment
-      SSM_PARAMETER_NAME                      = var.ami_ssm_parameter
+      AUTO_SCALING_GROUP_IS_ARM_DEFAULT                        = var.auto_scaling_group_is_arm_default ? "True" : "False"
+      AUTO_SCALING_GROUP_NAME                                  = var.autoscaling_group_name
+      DESCRIBE_INSTANCE_REFRESHES_MAX_RECORDS                  = var.describe_instance_refreshes_max_records
+      REFRESH_INSTANCE_WARMUP                                  = var.instance_refresh_instance_warmup
+      REFRESH_MIN_HEALTHY_PERCENTAGE                           = var.instance_refresh_min_healthy_percentage
+      REFRESH_SKIP_MATCHING                                    = var.instance_refresh_skip_matching ? "True" : "False"
+      SENTRY_DSN                                               = var.sentry_dsn
+      SENTRY_ENVIRONMENT                                       = var.sentry_environment
+      SSM_PARAMETER_NAME                                       = var.ami_ssm_parameter
+      SSM_PARAMETER_NAME_ARM                                   = var.ami_ssm_parameter_arm
+      UPDATE_MIXED_INSTANCES_POLICY_OVERRIDEN_LAUNCH_TEMPLATES = var.update_mixed_instances_policy_overriden_launch_templates ? "True" : "False"
     }
   }
 }
