@@ -49,9 +49,7 @@ data "aws_iam_policy_document" "lambda" {
       "ec2:ModifyLaunchTemplate",
     ]
 
-    resources = [
-      data.aws_launch_template.template.arn,
-    ]
+    resources = var.launch_templates_arns
   }
 
   statement {

@@ -99,9 +99,10 @@ variable "lambda_timeout" {
   type        = number
 }
 
-variable "launch_template_name" {
-  description = "Name of the launch template used by auto scaling group to refresh"
-  type        = string
+variable "launch_templates_arns" {
+  description = "List of Launch Template ARNs to allow access to"
+  default     = ["*"]
+  type        = list(string)
 }
 
 variable "launch_template_source_version" {
