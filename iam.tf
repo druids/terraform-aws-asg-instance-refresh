@@ -68,10 +68,13 @@ data "aws_iam_policy_document" "lambda" {
   }
 
   statement {
-    sid       = "AllowSSMGetParameter"
-    effect    = "Allow"
-    actions   = ["ssm:GetParameter"]
-    resources = ["arn:aws:ssm:${data.aws_region.current.name}:*:parameter${var.ami_ssm_parameter}"]
+    sid     = "AllowSSMGetParameter"
+    effect  = "Allow"
+    actions = ["ssm:GetParameter"]
+    resources = [
+      "arn:aws:ssm:${data.aws_region.current.name}:*:parameter${var.ami_ssm_parameter}",
+      "arn:aws:ssm:${data.aws_region.current.name}:*:parameter${var.ami_ssm_parameter_arm}",
+    ]
   }
 }
 
