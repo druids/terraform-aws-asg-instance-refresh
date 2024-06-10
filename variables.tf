@@ -131,3 +131,9 @@ variable "update_mixed_instances_policy_overriden_launch_templates" {
   default     = true
   type        = bool
 }
+
+variable "lambda_runtime" {
+  description = "Lambda Function runtime"
+  type        = string
+  default     = "python3.11"
+}
