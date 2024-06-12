@@ -52,6 +52,7 @@ No modules.
 | <a name="input_lambda_role_description"></a> [lambda\_role\_description](#input\_lambda\_role\_description) | Role description for the Lambda function | `string` | `""` | no |
 | <a name="input_lambda_role_name"></a> [lambda\_role\_name](#input\_lambda\_role\_name) | Role name for the Lambda function | `string` | `"ASGRefreshInstancesLambdaRole"` | no |
 | <a name="input_lambda_timeout"></a> [lambda\_timeout](#input\_lambda\_timeout) | Timeout for Lambda function in seconds | `number` | `60` | no |
+| <a name="input_lambda_runtime"></a> [lambda\_runtime](#input\_lambda\_runtime) | Lambda Function runtime | `string` | `python3.11` | no |
 | <a name="input_launch_template_source_version"></a> [launch\_template\_source\_version](#input\_launch\_template\_source\_version) | Source version for the new launch template | `string` | `"$Default"` | no |
 | <a name="input_launch_template_version_description"></a> [launch\_template\_version\_description](#input\_launch\_template\_version\_description) | Description of the new launch template version in Python's f-string format | `string` | `"Automated AMI refresh to \"{image_id}\""` | no |
 | <a name="input_launch_templates_arns"></a> [launch\_templates\_arns](#input\_launch\_templates\_arns) | List of Launch Template ARNs to allow access to | `list(string)` | <pre>[<br>  "*"<br>]</pre> | no |

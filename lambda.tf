@@ -9,7 +9,7 @@ resource "aws_lambda_function" "refresh" {
   function_name    = var.lambda_name
   handler          = "lambda.handler"
   role             = aws_iam_role.lambda.arn
-  runtime          = "python3.8"
+  runtime          = var.lambda_runtime
   timeout          = var.lambda_timeout
   source_code_hash = filebase64sha256("${path.module}/functions/lambda.zip")
   architectures    = [var.lambda_architecture]
