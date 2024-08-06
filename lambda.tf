@@ -33,6 +33,7 @@ resource "aws_lambda_function" "refresh" {
       SSM_PARAMETER_NAME                                       = var.ami_ssm_parameter
       SSM_PARAMETER_NAME_ARM                                   = var.ami_ssm_parameter_arm
       UPDATE_MIXED_INSTANCES_POLICY_OVERRIDEN_LAUNCH_TEMPLATES = var.update_mixed_instances_policy_overriden_launch_templates ? "True" : "False"
+      DD_TRACE_ENABLED                                         = var.datadog_trace_enabled
     }
   }
 }
