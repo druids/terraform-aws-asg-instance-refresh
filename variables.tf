@@ -32,6 +32,11 @@ variable "cloudwatch_event_rule_schedule_expression" {
   default     = "cron(0 0 * * ? *)"
   type        = string
 }
+variable "datadog_trace_enabled" {
+  description = "Sets DD_TRACE_ENABLED variable"
+  default     = false
+  type        = bool
+}
 
 variable "describe_instance_refreshes_max_records" {
   description = "Page size for boto3 when calling autoscaling:DescribeInstanceRefreshes (max is 100)"
